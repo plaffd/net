@@ -8,6 +8,27 @@ const t1 = Date.now();
 
 // ################################################################
 // ################################################################
+//							DARK MODE
+// ################################################################
+// ################################################################
+
+
+// toggle dark mode
+const themetoggle = document.getElementById("toggle-dark-mode");
+themetoggle.addEventListener("click", () => {
+	if (document.querySelector("body").className == "dark") {
+		document.querySelector("body").className = "";
+		themetoggle.textContent = "Dark Mode";
+	} else {
+		document.querySelector("body").className = "dark";
+		themetoggle.textContent = "Light Mode";
+	}
+});
+
+// !todo: classList.toggle instead?
+
+// ################################################################
+// ################################################################
 //							FOOTNOTE POPUPS
 // ################################################################
 // ################################################################
@@ -348,6 +369,7 @@ iobs_h1.observe(allHeadings[0]);
 rtbutton.querySelector('a').onclick = function(){
 		rtbutton.classList.remove("buttonVisible");
 		return true;	};
+
 
 /*
 

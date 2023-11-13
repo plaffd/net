@@ -1,7 +1,352 @@
+/* custom properties (variables) */
+:root {
+	/* for callouts, blockquotes*/
+	--color-grey: 220,220,220;
+	--left-borderwidth: 5px;
+	--color-note: 0,133,242;
+	--color-warning: 252,152,3;
+}
+
+/**/
+img,
+picture,
+video {
+  max-width: 100%;
+}
+
+/*
+https://developer.mozilla.org/en-US/docs/Web/CSS/Layout_cookbook/Center_an_element
+*/
+header{
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	text-align: center;
+	background-color: rgba(131,251,255,0.5);
+	border-bottom: 1px solid rgb(var(--color-grey));
+}
+
+#construction-message {
+	display: flex;
+	align-items: center;
+	margin: 0 20px;
+}
+
+#construction-message p {
+	padding: 0 10px;
+	text-wrap: balance;
+}
+
+#display-options {
+    margin-top: -10px;
+	padding-bottom: 1em;
+}
+
+body {
+	--callout-alpha: 0.15;
+	--color-bg: 255,255,255;
+	--color-fore: 0,0,0;
+	
+	font-family: Segoe UI, Helvetica, Arial, sans-serif;
+	margin: 0;
+}
+
+/* dark mode */
+body.dark {
+	
+	--callout-alpha: 0.3;
+	--color-bg: 18,18,18;
+	--color-fore: 255,255,255;
+	
+	color: rgb(var(--color-fore));
+	background-color: rgb(var(--color-bg));
+}
+
+/* https://developer.mozilla.org/en-US/docs/Learn/CSS/Styling_text/Styling_links
+dark mode links */
+.dark a, .dark a:link {
+	color: rgb(133,184,255);
+}
+
+.dark a:visited {
+	color: rgb(114,79,173);
+}
+
+/* actually want this behavior for both light and dark */
+a:hover, a:focus {
+	text-decoration: none;
+}
+
+.dark a:active {
+	color: red;
+}
+
+main {
+	
+	margin: auto;
+	max-width: 1200px;
+}
+
+article {
+	margin: 10px 20px;
+}
+
+
+h1 {
+	font-size: calc(1.5rem + 2vw);
+	line-height: 1;
+	margin-bottom: 0;
+}
+
+/* solid BG color for sticky scrolling */
+h2 {
+	padding-top: 6px;
+	background-color: rgb(var(--color-bg));
+	box-shadow: 0 2px 8px 10px rgb(var(--color-bg)); /* to blend better on scroll */
+}
+
+#date-posted {
+  font-style: italic;
+}
+
+#article-container {
+	display: flex;
+	flex-direction: row-reverse;
+	flex-wrap: wrap;
+	column-gap: 50px;
+}
+
+#article-toc {
+	flex: 1 250px;
+}
+
+#article-content {
+	flex: 4 600px;
+}
+
+/*
+Sticky behavior wasn't working
+align-self fix via https://stackoverflow.com/a/44446672
+*/
+#article-toc.sideTOC {
+	/*
+	margin-left: 50px;
+	this led to weird buggy behavior near wrapping boundary
+	use gap property in parent flex element instead
+	*/
+	position: sticky;
+	top: 10px;
+	align-self: flex-start;
+}
+
+#article-toc.sideTOC ul {
+	border-left: 3px solid rgb(var(--color-grey));
+}
+
+#article-content.topTOC h2{
+	position: sticky;
+	top: 0;
+	align-self: flex-start;
+}
+
+
+
+/*
+
+h2, h3 {
+	position: sticky;
+}
+
+h2 {
+	top: 0px;
+	padding: 5px 0;
+	background-color: red;
+}
+
+h3 {
+	top: 40px;
+	background-color: cyan;
+	font-style: italic;
+}
+
+*/
+
+p {
+	line-height: 1.3;
+}
+
+blockquote {
+	border-left: var(--left-borderwidth) solid rgb(var(--color-grey));
+	padding: 0 1.5em;
+	margin: 1em 0.1em;
+}
+
+sup {
+	font-size: x-small;
+}
+
+/* add icon for external links (icon from lucide.dev, code from MDN: https://developer.mozilla.org/en-US/docs/Learn/CSS/Styling_text/Styling_links#styling_links_as_buttons) */
+a[href^="http"] {
+	background: url("../img/external-link.svg") no-repeat 100% 3px;
+	background-size: 15px 15px;
+	padding-right: 18px;
+}
+
+
+/* general modal styling */
+dialog::backdrop {
+	background-color: rgb(50,50,50,0.8);
+	backdrop-filter: blur(5px);
+}
+
+/* https://stackoverflow.com/a/74481940 */
+/* remove the main scrollbar when dialog is open */
+html:has(dialog[open]) {
+	overflow: hidden;
+}
+
+
+/* footnote modal styling */
+dialog#fnmodal:modal {
+	margin: auto;
+	overflow: auto;
+	max-height: 87vh;
+	max-width: min(550px,calc(100vw - 70px));
+	padding: 0em 1em;
+	border-radius: 5px;
+}
+
+dialog:modal {
+	background-color: rgb(var(--color-bg));
+	color: rgb(var(--color-fore));
+}
+
+/* image modal styling */
+dialog#imgmodal:modal {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	background-color: transparent;
+	height: 90vh;
+	width: 90vw;
+	padding: 0;
+	border: none;
+	overflow: visible; /* to prevent top of image shadow being cut off */
+}
+
+/* convoluted wrapper setup to create shadow around image*/
+dialog#imgmodal:modal div.imgwrapper {
+	min-height: 20px; /* this allows flexbox to shrink this below "original" size */
+	margin: 0 auto;
+	/* offset-x | offset-y | ~blur-radius | ~~spread-radius | color */
+    box-shadow: 0 0 5px 5px rgba(0,0,0,0.3);
+}
+
+dialog#imgmodal:modal div.imgwrapper img {
+	max-height: 100%;
+	display: block;
+}
+
+dialog#imgmodal:modal div.modalcaption {
+	flex: none;
+}
+
+/*
+
+dialog#imgmodal:modal {
+	margin: auto;
+	overflow: visible;
+	background-color: transparent;
+	height: 90vh;
+	width: 90vw;
+	padding: 0;
+	border: none;
+}
+
+dialog#imgmodal:modal img{
+	max-height: 90%;
+	display: block;
+	margin: auto;
+    box-shadow: 0 0 5px 5px rgba(0,0,0,0.3);
+}
+
+*/
+
+dialog#imgmodal:modal p{
+	color: white;
+	text-align: center;
+	font-size: 1.3em;
+}
+
+
+/* figure (image + caption) styling */
+/*
+To make sure figure caption is not wider than image
+https://stackoverflow.com/questions/6534473/how-can-i-make-the-width-of-my-figcaption-match-the-width-of-the-img-inside
+*/
+figure {
+	display: table;	
+	margin: 0 auto;
+}
+
+figure a img {
+	border: 3px solid rgba(var(--color-fore),var(--callout-alpha));
+	box-sizing: border-box; /* without this, narrow screen image overflows figure container by 2 border widths */
+}
+
+figure a:hover img, figure a:focus img {
+	/* just a slight change to cue it's clickable */
+	filter: brightness(0.9);
+}
+
+figure figcaption {	
+	display: table-caption;
+	caption-side: bottom;
+	text-align: center;
+	font-style: italic;
+	padding: 2px 0.3em 0.4em;
+	margin-top: -4px;
+	line-height: 1.1;
+	background-color: rgba(var(--color-fore),var(--callout-alpha));
+}
+
+/*
+!todo - allow for left/right aligning of images.
+below stuff is for that, but not a priority.
+
+figure {
+	float: left;
+	margin-left: 0;
+}
+
+h2, h3 {
+	clear: both;
+}
+
+ul, ol {
+	overflow: hidden;
+}
+
+Problem: list next to floated image loses its indent/margin, list markers overlapping onto image.
+
+Used below solution. I don't understand 100% why this works, so beware of side effects, but seems to fix.
+https://stackoverflow.com/a/710264
+"Applying an ul { overflow: hidden; } to the ul ensures that the box itself is pushed aside by the float, instead of the contents of the box.
+"
+A side effect is if have long list that extends past floated image, bullets won't shift back, leaving a lot of whitespace (see https://stackoverflow.com/questions/23061893/ul-padding-not-applying-next-to-a-floating-img). But this isn't really a bug, just ugly. Just make sure not to use lists that long esp. if next to image!
+*/
+
+
+
 nav.outline > ul {
 	list-style-type: none;
 	padding: 0;
 	margin: 0;
+}
+
+nav.outline > ul > li{
+	line-height: 1;
+	padding: 0.3em 0; /* vertical */
 }
 
 nav.outline > ul > li.H2 {
@@ -13,6 +358,188 @@ nav.outline > ul > li.H2 {
 nav.outline > ul > li.H3 {
 	padding-left: 30px;
 }
+
+
+/*
+make links in TOC different style than normal links
+don't care about :link, :visited being distinctive
+leave :active too
+*/
+
+#article-toc a {
+	color: rgb(var(--color-fore));
+	text-decoration: none;
+}
+
+#article-toc a:hover, #article-toc a:focus {
+	text-decoration: underline;
+}
+
+/* specific to when TOC is on the side*/
+#article-toc.sideTOC a {
+	opacity: 40%;
+}
+
+#article-toc.sideTOC a:hover, #article-toc.sideTOC a:focus {
+	opacity: 100%;
+	text-decoration: none;
+}
+
+
+/* still deciding between modifying a vs. li */
+#article-toc li.activenav {
+	background-color: rgba(214, 179, 242, var(--callout-alpha));
+}
+#article-toc a.activenav {
+	/* offset-x | offset-y | blur-radius | color */
+	text-shadow: 1px 1px 1px red;
+}
+
+
+
+
+
+
+/* callouts - also blockquotes so override earlier def */
+.callout {
+    border: 1px solid rgb(var(--color-grey));
+    border-radius: 0.25em;
+	/* offset-x | offset-y | ~blur-radius | ~~spread-radius | color */
+    box-shadow: 0 1px 2px rgba(var(--color-grey), 0.05);
+	padding: 0.7em 1em 0.2em 1.5em;    
+}
+
+.ctype-NOTE {
+    background-color: rgba(var(--color-note), var(--callout-alpha));
+    border-left: var(--left-borderwidth) solid rgb(var(--color-note));
+}
+
+.ctype-NOTE::before{
+	content: "Note";
+	color: rgb(var(--color-note));
+	font-weight: bold;
+}
+
+.ctype-WARNING {
+    background-color: rgba(var(--color-warning), var(--callout-alpha));
+    border-left: var(--left-borderwidth) solid rgb(var(--color-warning));
+}
+
+.ctype-WARNING::before{
+	content: "Warning";
+	color: rgb(var(--color-warning));
+	font-weight: bold;
+}
+
+
+
+
+hr {
+    border: none;
+    border-top: 3px double rgb(var(--color-grey));
+    overflow: visible;
+    margin: 3em 0;
+}
+
+
+div#article-feedback {
+    margin: 3em 0 0 0;
+}
+
+
+
+/* auto height animation solution from https://keithjgrant.com/posts/2023/04/transitioning-to-height-auto/ */
+
+#expand-toggle {
+  display: none;
+}
+
+#expand-btn {
+  display: inline-block;
+  color: gray;
+}
+
+.wrapper {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.5s ease-out;
+}
+
+.inner {
+  overflow: hidden;
+  font-style: italic;
+}
+
+.label-collapsed {
+  display: inline;
+}
+
+.label-expanded {
+  display: none;
+}
+
+/* hidden element prevents margin collapse resulting in annoying excess spacing */
+#expand-toggle + p {
+  margin-bottom: 0;
+  transition: margin-bottom 0.5s ease-out;
+}
+
+#expand-toggle:checked + p {
+  margin-bottom: 1em;
+}
+
+
+#expand-toggle:checked ~ .wrapper {
+  grid-template-rows: 1fr;
+}
+
+#expand-toggle:checked ~ * .label-collapsed {
+  display: none;
+}
+#expand-toggle:checked ~ * .label-expanded {
+  display: inline;
+}
+
+
+
+
+
+/*style button to return to top*/
+/*
+#return2top {
+	background-color: rgb(0,133,242);
+	width: 30px;
+	height: 30px;
+	line-height: 30px;
+	border-radius: 15px;
+	text-align: center;
+	position: fixed;
+	top: 10px;
+	right: 20px;
+	z-index: 1;
+	opacity: 100%;
+}
+
+#return2top svg {
+	vertical-align: sub;
+}
+
+*/
+#return2top {
+	visibility: hidden;
+	position: fixed;
+	top: 12px;
+	right: 12px;
+	z-index: 1;
+}
+
+#return2top.buttonVisible {
+	visibility: visible;
+}
+
+
+
+
 
 tr:nth-child(even) {
   background-color: #F0F0F0;
