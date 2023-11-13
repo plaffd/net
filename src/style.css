@@ -544,3 +544,11 @@ thead {
 tr:nth-child(even) {
     background-color: rgba(100,100,100,var(--callout-alpha));
 }
+
+table {
+  margin: 0 0.5em;
+}
+
+th, td {
+  padding: 9px;
+}
