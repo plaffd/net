@@ -1,0 +1,19 @@
+nav.outline > ul {
+	list-style-type: none;
+	padding: 0;
+	margin: 0;
+}
+
+nav.outline > ul > li.H2 {
+	font-weight: bold;
+	margin-top: 4px;
+	padding-left: 15px;
+}
+
+nav.outline > ul > li.H3 {
+	padding-left: 30px;
+}
+
+tr:nth-child(even) {
+  background-color: #F0F0F0;
+}
