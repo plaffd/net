@@ -537,10 +537,10 @@ div#article-feedback {
 	visibility: visible;
 }
 
-
-
-
+thead {
+    background-color: rgba(100,100,100,var(--callout-alpha));
+}
 
 tr:nth-child(even) {
-  background-color: #F0F0F0;
+    background-color: rgba(100,100,100,var(--callout-alpha));
 }
